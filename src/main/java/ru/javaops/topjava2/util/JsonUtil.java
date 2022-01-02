@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,11 +45,13 @@ public class JsonUtil {
     }
 
     public static <T> String writeAdditionProps(T obj, String addName, Object addValue) {
-        return writeAdditionProps(obj, Map.of(addName, addValue));
+        Map<String, Object> map = new HashMap<>();
+        map.put(addName, addValue);
+        return writeAdditionProps(obj, map);
     }
 
     public static <T> String writeAdditionProps(T obj, Map<String, Object> addProps) {
-        Map<String, Object> map = mapper.convertValue(obj, new TypeReference<>() {});
+        Map<String, Object> map = mapper.convertValue(obj, new TypeReference<Map<String, Object>>() {});
         map.putAll(addProps);
         return writeValue(map);
     }
