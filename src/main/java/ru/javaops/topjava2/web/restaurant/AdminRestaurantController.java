@@ -2,21 +2,15 @@ package ru.javaops.topjava2.web.restaurant;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javaops.topjava2.error.IllegalRequestDataException;
 import ru.javaops.topjava2.model.Restaurant;
-import ru.javaops.topjava2.model.User;
 import ru.javaops.topjava2.repository.RestaurantRepository;
-import ru.javaops.topjava2.repository.UserRepository;
-import ru.javaops.topjava2.web.user.AdminUserController;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -39,7 +33,7 @@ public class AdminRestaurantController {
     @GetMapping("/{id}")
     public Restaurant get(@PathVariable int id) {
         log.info("get {}", id);
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Restaurant '" + id + "' was not found"));
+        return getRestaurant(id);
     }
 
     @DeleteMapping("/{id}")
@@ -72,5 +66,9 @@ public class AdminRestaurantController {
         log.info("update {} with id={}", restaurant, id);
         assureIdConsistent(restaurant, id);
         repository.save(restaurant);
+    }
+
+    private Restaurant getRestaurant(int id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalRequestDataException("Restaurant '" + id + "' was not found"));
     }
 }
