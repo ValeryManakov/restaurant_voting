@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "registered"}, name = "votes_unique_user_registered_idx")})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Vote extends BaseEntity {
 
     @Column(name = "registered", nullable = false, columnDefinition = "date default now()", updatable = false)
