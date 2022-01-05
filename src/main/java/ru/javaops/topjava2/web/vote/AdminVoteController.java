@@ -57,9 +57,9 @@ public class AdminVoteController {
         voteRepository.save(vote);
     }
 
-    @GetMapping("/current")
-    public List<Vote> getForCurrentDate() {
-        log.info("getCurrent");
+    @GetMapping("/for-today")
+    public List<Vote> getForToday() {
+        log.info("get for today");
         return voteRepository.findAll(Sort.by(Sort.Direction.DESC, "registered"))
                 .stream().filter(vote -> LocalDateTime.now().toLocalDate().equals(vote.getRegistered()))
                 .collect(Collectors.toList());
