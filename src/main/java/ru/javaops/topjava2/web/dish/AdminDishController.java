@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.topjava2.error.IllegalRequestDataException;
 import ru.javaops.topjava2.model.Dish;
 import ru.javaops.topjava2.model.Restaurant;
-import ru.javaops.topjava2.repository.DishRepository;
 import ru.javaops.topjava2.repository.RestaurantRepository;
 
 import javax.validation.Valid;
@@ -24,20 +23,17 @@ import static ru.javaops.topjava2.util.validation.ValidationUtil.checkNew;
 @RestController
 @RequestMapping(value = AdminDishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-public class AdminDishController {
+public class AdminDishController extends AbstractDishController {
 
     static final String REST_URL = "/api/admin/restaurants/{restaurantId}/dishes";
 
     @Autowired
-    private DishRepository dishRepository;
-
-    @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Override
     @GetMapping("/{id}")
     public Dish get(@PathVariable int restaurantId, @PathVariable int id) {
-        log.info("get dish {} for restaurant {}", id, restaurantId);
-        return getDish(id, restaurantId);
+        return super.get(restaurantId, id);
     }
 
     @DeleteMapping("/{id}")
@@ -48,10 +44,10 @@ public class AdminDishController {
         dishRepository.deleteExisted(id);
     }
 
+    @Override
     @GetMapping
     public List<Dish> getAllForRestaurant(@PathVariable int restaurantId) {
-        log.info("getAll for restaurant {}", restaurantId);
-        return dishRepository.getAllForRestaurant(restaurantId);
+        return super.getAllForRestaurant(restaurantId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -75,11 +71,6 @@ public class AdminDishController {
         checkRestaurantId(dish, restaurantId);
         dish.setRestaurant(getRestaurant(restaurantId));
         dishRepository.save(dish);
-    }
-
-    private Dish getDish(int id, int restaurantId) {
-        return dishRepository.findById(id, restaurantId)
-                .orElseThrow(() -> new IllegalRequestDataException("Dish '" + id + " for restaurant '" + restaurantId + "' was not found"));
     }
 
     private Restaurant getRestaurant(int restaurantId) {
