@@ -10,7 +10,7 @@ public class DishUtil {
 
     public static void checkRestaurantId(Dish dish, int restaurantId) {
         Restaurant restaurant = dish.getRestaurant();
-        if (restaurant != null && restaurant.getId() != restaurantId)
+        if (restaurant != null && restaurant.getId() != null && restaurant.getId() != restaurantId)
             throw new IllegalRequestDataException("Dish must have restaurant_id=" + restaurantId);
     }
 }
