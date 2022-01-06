@@ -59,6 +59,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return createResponseEntity(getDefaultBody(request, ErrorAttributeOptions.of(MESSAGE), null), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> defaultErrorHandler(WebRequest request, Exception ex) {
+        log.error("Exception: {}", ex.getMessage());
+        return createResponseEntity(getDefaultBody(request, ErrorAttributeOptions.of(MESSAGE), null), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<Object> handleBindingErrors(BindingResult result, WebRequest request) {
         String msg = result.getFieldErrors().stream()
                 .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
