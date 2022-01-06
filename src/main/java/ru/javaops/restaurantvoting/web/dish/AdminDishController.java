@@ -1,5 +1,6 @@
 package ru.javaops.restaurantvoting.web.dish;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import static ru.javaops.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RestController
 @RequestMapping(value = AdminDishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@Tag(name = "Admin Dish Controller")
 public class AdminDishController extends AbstractDishController {
 
     static final String REST_URL = "/api/admin/restaurants/{restaurantId}/dishes";

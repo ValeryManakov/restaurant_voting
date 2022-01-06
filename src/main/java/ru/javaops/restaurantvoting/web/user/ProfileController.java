@@ -1,5 +1,6 @@
 package ru.javaops.restaurantvoting.web.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,6 +27,7 @@ import static ru.javaops.restaurantvoting.util.validation.ValidationUtil.checkNe
 @Slf4j
 // TODO: cache only most requested data!
 @CacheConfig(cacheNames = "users")
+@Tag(name = "Profile Controller")
 public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
 

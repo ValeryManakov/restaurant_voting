@@ -1,5 +1,6 @@
 package ru.javaops.restaurantvoting.web.vote;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = ProfileVoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@Tag(name = "Profile Vote Controller")
 public class ProfileVoteController extends AbstractVoteController {
 
     static final String REST_URL = "/api/profile/votes";
