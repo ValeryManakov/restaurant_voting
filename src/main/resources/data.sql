@@ -33,10 +33,10 @@ VALUES ('Farfor'),
        ('Spinasse');
 
 INSERT INTO DISHES (name, price, restaurant_id)
-VALUES ('Gyro', 112.50, 1),
-       ('Onion soup', 143.18, 1),
+VALUES ('Chicken noodles', 150.13, 1),
+       ('Gyro', 112.50, 1),
        ('Meatballs', 171.25, 1),
-       ('Chicken noodles', 150.13, 1),
+       ('Onion soup', 143.18, 1),
        ('Tomato soup', 98.33, 2),
        ('Greek salad', 145.76, 2),
        ('Onion soup', 156.14, 2),

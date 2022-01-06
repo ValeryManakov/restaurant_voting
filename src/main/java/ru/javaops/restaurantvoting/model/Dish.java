@@ -27,4 +27,9 @@ public class Dish extends NamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
+
+    public Dish(Integer id, String name, Double price) {
+        super(id, name);
+        this.price = price;
+    }
 }
