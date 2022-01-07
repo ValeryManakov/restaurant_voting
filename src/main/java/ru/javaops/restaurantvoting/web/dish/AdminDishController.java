@@ -3,6 +3,8 @@ package ru.javaops.restaurantvoting.web.dish;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import static ru.javaops.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RestController
 @RequestMapping(value = AdminDishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@CacheConfig(cacheNames = "dishes")
 @Tag(name = "Admin Dish Controller")
 public class AdminDishController extends AbstractDishController {
 
@@ -40,6 +43,7 @@ public class AdminDishController extends AbstractDishController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("delete dish {} for restaurant {}", id, restaurantId);
         getDish(id, restaurantId);
@@ -53,6 +57,7 @@ public class AdminDishController extends AbstractDishController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(allEntries = true)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Dish dish) {
         log.info("create {} for restaurant {}", dish, restaurantId);
         checkNew(dish);
@@ -67,6 +72,7 @@ public class AdminDishController extends AbstractDishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Dish dish, @PathVariable int restaurantId, @PathVariable int id) {
         log.info("update {} with id={} for restaurant {}", dish, id, restaurantId);
         assureIdConsistent(dish, id);
