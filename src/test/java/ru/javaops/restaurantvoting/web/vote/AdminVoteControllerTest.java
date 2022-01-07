@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.restaurantvoting.model.Vote;
 import ru.javaops.restaurantvoting.repository.VoteRepository;
 import ru.javaops.restaurantvoting.web.AbstractControllerTest;
@@ -101,7 +99,6 @@ class AdminVoteControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void updateAfterDeadLine() throws Exception {
         perform(MockMvcRequestBuilders.post(REST_URL)
