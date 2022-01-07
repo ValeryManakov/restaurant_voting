@@ -24,7 +24,6 @@ import static ru.javaops.restaurantvoting.util.validation.ValidationUtil.checkNe
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-// TODO: cache only most requested data!
 @CacheConfig(cacheNames = "users")
 @Tag(name = "Admin User Controller")
 public class AdminUserController extends AbstractUserController {
