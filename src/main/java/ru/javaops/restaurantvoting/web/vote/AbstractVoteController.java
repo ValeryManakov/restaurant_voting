@@ -10,7 +10,9 @@ import ru.javaops.restaurantvoting.repository.RestaurantRepository;
 import ru.javaops.restaurantvoting.repository.VoteRepository;
 import ru.javaops.restaurantvoting.web.AuthUser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,16 +27,15 @@ public class AbstractVoteController {
     @Autowired
     protected RestaurantRepository restaurantRepository;
 
-    protected void saveVotePerRestaurant(int restaurantId, AuthUser authUser) {
+    protected void saveVotePerRestaurant(int restaurantId, LocalTime localTime, AuthUser authUser) {
         log.info("save vote for restaurant {}", restaurantId);
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        Vote vote = voteRepository.findByUserId(authUser.id(), currentDateTime.toLocalDate()).orElse(null);
+        Vote vote = voteRepository.findByUserId(authUser.id(), LocalDate.now()).orElse(null);
         if (vote == null) {
             vote = new Vote();
-        } else if (!isTimeCorrect(currentDateTime.toLocalTime())) {
-            throw new IllegalRequestDataException("It is after 11:00");
+        } else if (!isTimeCorrect(localTime)) {
+            throw new IllegalRequestDataException("You've already voted, you can't change your vote after 11:00");
         }
-        vote.setRegistered(currentDateTime.toLocalDate());
+        vote.setRegistered(LocalDate.now());
         vote.setUser(authUser.getUser());
         vote.setRestaurant(getRestaurant(restaurantId));
         voteRepository.save(vote);
