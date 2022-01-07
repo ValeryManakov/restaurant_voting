@@ -2,6 +2,7 @@ package ru.javaops.restaurantvoting.web.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
@@ -46,7 +47,8 @@ class ProfileControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL))
                 .andExpect(status().isNoContent());
-        USER_MATCHER.assertMatch(userRepository.findAll(), admin);
+        USER_MATCHER.assertMatch(userRepository.findAll(Sort.by(Sort.Direction.ASC, "name", "email")),
+                                admin, user10, user11, user12, user3, user4, user5, user6, user7, user8, user9);
     }
 
     @Test

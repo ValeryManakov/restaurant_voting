@@ -8,7 +8,7 @@ VALUES ('User', 'user@yandex.ru', '{noop}password'),
        ('User7', 'user7@yandex.ru', '{noop}password7'),
        ('User8', 'user8@yandex.ru', '{noop}password8'),
        ('User9', 'user9@yandex.ru', '{noop}password9'),
-       ('User10', 'use10@yandex.ru', '{noop}password10'),
+       ('User10', 'user10@yandex.ru', '{noop}password10'),
        ('User11', 'user11@yandex.ru', '{noop}password11'),
        ('User12', 'user12@yandex.ru', '{noop}password12');
 
