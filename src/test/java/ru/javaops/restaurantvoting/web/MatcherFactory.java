@@ -7,6 +7,7 @@ import ru.javaops.restaurantvoting.util.JsonUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +34,12 @@ public class MatcherFactory {
         return usingAssertions(clazz,
                 (a, e) -> assertThat(a).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(e),
                 (a, e) -> assertThat(a).usingElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(e));
+    }
+
+    public static <T> Matcher<T> usingCollectionSizeComparator(Class<T> clazz) {
+        return usingAssertions(clazz,
+                (a, e) -> assertThat(a).isEqualTo(e),
+                (a, e) -> assertThat(((Collection) a).size()).isEqualTo(((Collection) e).size()));
     }
 
     public static class Matcher<T> {

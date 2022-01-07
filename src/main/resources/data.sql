@@ -53,4 +53,7 @@ VALUES (CURRENT_DATE(), 12, 1),
        (CURRENT_DATE(), 9, 1),
        (CURRENT_DATE(), 8, 2),
        (CURRENT_DATE(), 7, 2),
-       (CURRENT_DATE(), 6, 3);
+       (CURRENT_DATE(), 6, 2),
+       (CURRENT_DATE(), 5, 3),
+       (CURRENT_DATE() - 1, 4, 3),
+       (CURRENT_DATE() - 1, 3, 3);
