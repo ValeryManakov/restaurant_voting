@@ -15,12 +15,12 @@ import static ru.javaops.restaurantvoting.web.user.UserTestData.USER_MAIL;
 
 class ProfileDishControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = "/api/profile/restaurants/" + RESTAURANT1_ID +"/dishes/";
+    private static final String REST_URL = ProfileDishController.REST_URL + "/";
 
     @Test
     @WithUserDetails(value = USER_MAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + DISH1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID +"/dishes/" + DISH1_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
@@ -31,21 +31,21 @@ class ProfileDishControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID +"/dishes/" + NOT_FOUND))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void getUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID +"/dishes/"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getAllForRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID +"/dishes/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(DISH_MATCHER.contentJson(dish1, dish2, dish3, dish4));

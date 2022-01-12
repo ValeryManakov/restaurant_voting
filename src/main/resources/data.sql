@@ -32,19 +32,22 @@ VALUES ('Farfor'),
        ('Geronimo'),
        ('Spinasse');
 
-INSERT INTO DISHES (name, price, restaurant_id)
-VALUES ('Chicken noodles', 150.13, 1),
-       ('Gyro', 112.50, 1),
-       ('Meatballs', 171.25, 1),
-       ('Onion soup', 143.18, 1),
-       ('Tomato soup', 98.33, 2),
-       ('Greek salad', 145.76, 2),
-       ('Onion soup', 156.14, 2),
-       ('Pork chop', 197.13, 2),
-       ('Risotto', 114.78, 3),
-       ('Roast', 200.19, 3),
-       ('Vegetable soup', 171.13, 3),
-       ('Sauce', 58.13, 3);
+INSERT INTO DISHES (name, registered, price, restaurant_id)
+VALUES ('Dish01', CURRENT_DATE(), 100.00, 1),
+       ('Dish02', CURRENT_DATE(), 100.50, 1),
+       ('Dish03', CURRENT_DATE(), 101.00, 1),
+       ('Dish04', CURRENT_DATE(), 101.50, 1),
+       ('Dish05', CURRENT_DATE(), 102.00, 2),
+       ('Dish06', CURRENT_DATE(), 102.50, 2),
+       ('Dish07', CURRENT_DATE(), 103.00, 2),
+       ('Dish08', CURRENT_DATE(), 103.50, 2),
+       ('Dish09', CURRENT_DATE(), 104.00, 3),
+       ('Dish10', CURRENT_DATE(), 104.50, 3),
+       ('Dish11', CURRENT_DATE(), 105.00, 3),
+       ('Dish12', CURRENT_DATE(), 105.50, 3),
+       ('Dish13', CURRENT_DATE() - 1, 106.00, 1),
+       ('Dish14', CURRENT_DATE() - 1, 106.50, 2),
+       ('Dish15', CURRENT_DATE() - 1, 107.00, 3);
 
 INSERT INTO VOTES (registered, user_id, restaurant_id)
 VALUES (CURRENT_DATE(), 12, 1),
