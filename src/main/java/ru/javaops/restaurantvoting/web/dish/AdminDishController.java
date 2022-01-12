@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import ru.javaops.restaurantvoting.repository.RestaurantRepository;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.javaops.restaurantvoting.util.DishUtil.checkRestaurantId;
@@ -30,18 +32,18 @@ import static ru.javaops.restaurantvoting.util.validation.ValidationUtil.checkNe
 @Tag(name = "Admin Dish Controller")
 public class AdminDishController extends AbstractDishController {
 
-    static final String REST_URL = "/api/admin/restaurants/{restaurantId}/dishes";
+    static final String REST_URL = "/api/admin/restaurants";
 
     @Autowired
     private RestaurantRepository restaurantRepository;
 
     @Override
-    @GetMapping("/{id}")
+    @GetMapping("/{restaurantId}/dishes/{id}")
     public Dish get(@PathVariable int restaurantId, @PathVariable int id) {
         return super.get(restaurantId, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{restaurantId}/dishes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
@@ -51,12 +53,23 @@ public class AdminDishController extends AbstractDishController {
     }
 
     @Override
-    @GetMapping
-    public List<Dish> getAllForRestaurant(@PathVariable int restaurantId) {
-        return super.getAllForRestaurant(restaurantId);
+    @GetMapping("/{restaurantId}/dishes")
+    public List<Dish> getAllForRestaurantByDate(@PathVariable int restaurantId,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate registered) {
+        return super.getAllForRestaurantByDate(restaurantId, registered);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/dishes/by-date")
+    public List<Dish> getAllByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate registered) {
+        return dishRepository.getAllByDate(registered);
+    }
+
+    @GetMapping("/dishes")
+    public List<Dish> getAll() {
+        return dishRepository.getAll();
+    }
+
+    @PostMapping(value = "/{restaurantId}/dishes", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Dish dish) {
         log.info("create {} for restaurant {}", dish, restaurantId);
@@ -70,7 +83,7 @@ public class AdminDishController extends AbstractDishController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restaurantId}/dishes/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Dish dish, @PathVariable int restaurantId, @PathVariable int id) {

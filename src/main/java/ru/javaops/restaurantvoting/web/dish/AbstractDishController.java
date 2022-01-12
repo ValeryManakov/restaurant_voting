@@ -6,6 +6,7 @@ import ru.javaops.restaurantvoting.error.IllegalRequestDataException;
 import ru.javaops.restaurantvoting.model.Dish;
 import ru.javaops.restaurantvoting.repository.DishRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -19,9 +20,9 @@ public class AbstractDishController {
         return getDish(id, restaurantId);
     }
 
-    protected List<Dish> getAllForRestaurant(int restaurantId) {
+    protected List<Dish> getAllForRestaurantByDate(int restaurantId, LocalDate registered) {
         log.info("getAll for restaurant {}", restaurantId);
-        return dishRepository.getAllForRestaurant(restaurantId);
+        return dishRepository.getAllForRestaurantByDate(restaurantId, registered);
     }
 
     protected Dish getDish(int id, int restaurantId) {
