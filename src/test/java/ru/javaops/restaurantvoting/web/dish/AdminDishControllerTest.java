@@ -13,14 +13,14 @@ import ru.javaops.restaurantvoting.repository.DishRepository;
 import ru.javaops.restaurantvoting.util.JsonUtil;
 import ru.javaops.restaurantvoting.web.AbstractControllerTest;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.javaops.restaurantvoting.util.TimeUtil.TODAY;
 import static ru.javaops.restaurantvoting.web.dish.DishTestData.*;
 import static ru.javaops.restaurantvoting.web.restaurant.RestaurantTestData.RESTAURANT1_ID;
+import static ru.javaops.restaurantvoting.web.restaurant.RestaurantTestData.restaurant1;
 import static ru.javaops.restaurantvoting.web.user.UserTestData.ADMIN_MAIL;
 import static ru.javaops.restaurantvoting.web.user.UserTestData.USER_MAIL;
 
@@ -67,7 +67,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void getAllForRestaurantByDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + "/dishes")
-                .param("registered", TODAY))
+                .param("registered", TODAY.toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(DISH_MATCHER.contentJson(fisrtRestaurantDishesForToday));
@@ -77,7 +77,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void getAllByDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "dishes/by-date")
-                .param("registered", TODAY))
+                .param("registered", TODAY.toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(DISH_MATCHER.contentJson(allDishesForToday));
@@ -120,13 +120,15 @@ class AdminDishControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        DISH_MATCHER.assertMatch(repository.getById(DISH1_ID), getUpdated());
+        updated.setId(DISH1_ID);
+        updated.setRestaurant(restaurant1);
+        DISH_MATCHER.assertMatch(repository.getById(DISH1_ID), updated);
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        Dish invalid = new Dish(DISH1_ID, "Invalid dish", LocalDate.now(), 10001.11);
+        Dish invalid = new Dish(DISH1_ID, "Invalid dish", TODAY, 10001.11);
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT1_ID + "/dishes/" + DISH1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -138,7 +140,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void updateDuplicate() throws Exception {
-        Dish updated = new Dish(DISH1_ID, dish2.getName(), LocalDate.now(), 150.17);
+        Dish updated = new Dish(DISH1_ID, dish2.getName(), TODAY, 150.17);
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT1_ID + "/dishes/" + DISH1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
@@ -158,6 +160,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
         Dish created = DISH_MATCHER.readFromJson(action);
         int newId = created.id();
         newDish.setId(newId);
+        newDish.setRestaurant(restaurant1);
         DISH_MATCHER.assertMatch(created, newDish);
         DISH_MATCHER.assertMatch(repository.getById(newId), newDish);
     }
@@ -165,7 +168,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        Dish invalid = new Dish(null, "Invalid dish", LocalDate.now(), 10001.11);
+        Dish invalid = new Dish(null, "Invalid dish", TODAY, 10001.11);
         perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT1_ID + "/dishes/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -177,7 +180,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
-        Dish expected = new Dish(null, dish2.getName(), LocalDate.now(),150.17);
+        Dish expected = new Dish(null, dish2.getName(), TODAY,150.17);
         perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT1_ID +"/dishes/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))

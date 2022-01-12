@@ -3,16 +3,14 @@ package ru.javaops.restaurantvoting.web.dish;
 import ru.javaops.restaurantvoting.model.Dish;
 import ru.javaops.restaurantvoting.web.MatcherFactory;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import static ru.javaops.restaurantvoting.util.TimeUtil.TODAY;
 import static ru.javaops.restaurantvoting.web.restaurant.RestaurantTestData.*;
 
 public class DishTestData {
-    public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingEqualsComparator(Dish.class);
-
-    public static String TODAY = LocalDate.now().toString();
+    public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class);
 
     public static final int DISH1_ID = 1;
     public static final int DISH2_ID = 2;
@@ -33,22 +31,22 @@ public class DishTestData {
 
     public static final int NOT_FOUND = 100;
 
-    public static final Dish dish1 = new Dish(DISH1_ID, "Dish01", LocalDate.now(), 100.00);
-    public static final Dish dish2 = new Dish(DISH2_ID, "Dish02", LocalDate.now(), 100.50);
-    public static final Dish dish3 = new Dish(DISH3_ID, "Dish03", LocalDate.now(), 101.00);
-    public static final Dish dish4 = new Dish(DISH4_ID, "Dish04", LocalDate.now(), 101.50);
+    public static final Dish dish1 = new Dish(DISH1_ID, "Dish01", TODAY, 100.00);
+    public static final Dish dish2 = new Dish(DISH2_ID, "Dish02", TODAY, 100.50);
+    public static final Dish dish3 = new Dish(DISH3_ID, "Dish03", TODAY, 101.00);
+    public static final Dish dish4 = new Dish(DISH4_ID, "Dish04", TODAY, 101.50);
 
-    public static final Dish dish5 = new Dish(DISH5_ID, "Dish05", LocalDate.now(), 102.00);
-    public static final Dish dish6 = new Dish(DISH6_ID, "Dish06", LocalDate.now(), 102.50);
-    public static final Dish dish7 = new Dish(DISH7_ID, "Dish07", LocalDate.now(), 103.00);
-    public static final Dish dish8 = new Dish(DISH8_ID, "Dish08", LocalDate.now(), 103.50);
-    public static final Dish dish9 = new Dish(DISH9_ID, "Dish09", LocalDate.now(), 104.00);
-    public static final Dish dish10 = new Dish(DISH10_ID, "Dish10", LocalDate.now(), 104.50);
-    public static final Dish dish11 = new Dish(DISH11_ID, "Dish11", LocalDate.now(), 105.00);
-    public static final Dish dish12 = new Dish(DISH12_ID, "Dish12", LocalDate.now(), 105.50);
-    public static final Dish dish13 = new Dish(DISH13_ID, "Dish13", LocalDate.now(), 106.00);
-    public static final Dish dish14 = new Dish(DISH14_ID, "Dish14", LocalDate.now(), 106.50);
-    public static final Dish dish15 = new Dish(DISH15_ID, "Dish15", LocalDate.now(), 107.00);
+    public static final Dish dish5 = new Dish(DISH5_ID, "Dish05", TODAY, 102.00);
+    public static final Dish dish6 = new Dish(DISH6_ID, "Dish06", TODAY, 102.50);
+    public static final Dish dish7 = new Dish(DISH7_ID, "Dish07", TODAY, 103.00);
+    public static final Dish dish8 = new Dish(DISH8_ID, "Dish08", TODAY, 103.50);
+    public static final Dish dish9 = new Dish(DISH9_ID, "Dish09", TODAY, 104.00);
+    public static final Dish dish10 = new Dish(DISH10_ID, "Dish10", TODAY, 104.50);
+    public static final Dish dish11 = new Dish(DISH11_ID, "Dish11", TODAY, 105.00);
+    public static final Dish dish12 = new Dish(DISH12_ID, "Dish12", TODAY, 105.50);
+    public static final Dish dish13 = new Dish(DISH13_ID, "Dish13", TODAY.minusDays(1), 106.00);
+    public static final Dish dish14 = new Dish(DISH14_ID, "Dish14", TODAY.minusDays(1), 106.50);
+    public static final Dish dish15 = new Dish(DISH15_ID, "Dish15", TODAY.minusDays(1), 107.00);
 
     static {
         dish1.setRestaurant(restaurant1);
@@ -74,10 +72,10 @@ public class DishTestData {
     public static List<Dish> allDishes = Arrays.asList(dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9, dish10, dish11, dish12, dish13, dish14, dish15);
 
     public static Dish getNew() {
-        return new Dish(null, "New dish", LocalDate.now(), 300.25);
+        return new Dish(null, "New dish", TODAY, 300.25);
     }
 
     public static Dish getUpdated() {
-        return new Dish(DISH1_ID, "Updated dish", LocalDate.now(), 211.17);
+        return new Dish(DISH1_ID, "Updated dish", TODAY, 211.17);
     }
 }

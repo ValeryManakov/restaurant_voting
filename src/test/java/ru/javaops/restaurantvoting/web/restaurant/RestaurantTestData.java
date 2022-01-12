@@ -4,7 +4,7 @@ import ru.javaops.restaurantvoting.model.Restaurant;
 import ru.javaops.restaurantvoting.web.MatcherFactory;
 
 public class RestaurantTestData {
-    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingEqualsComparator(Restaurant.class);
+    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class);
 
     public static final int RESTAURANT1_ID = 1;
     public static final int RESTAURANT2_ID = 2;

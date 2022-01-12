@@ -8,11 +8,12 @@ import ru.javaops.restaurantvoting.model.Restaurant;
 import ru.javaops.restaurantvoting.repository.RestaurantRepository;
 import ru.javaops.restaurantvoting.repository.VoteRepository;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static ru.javaops.restaurantvoting.util.TimeUtil.TODAY;
 
 @Slf4j
 public class AbstractRestaurantController {
@@ -36,7 +37,7 @@ public class AbstractRestaurantController {
     protected List<Restaurant> getBest() {
         log.info("getBest");
         Map<String, Integer> votesCountPerRestaurant = voteRepository.findAll(Sort.by(Sort.Direction.DESC, "registered"))
-                .stream().filter(vote -> LocalDateTime.now().toLocalDate().equals(vote.getRegistered()))
+                .stream().filter(vote -> TODAY.equals(vote.getRegistered()))
                 .collect(Collectors.groupingBy(vote -> vote.getRestaurant().getName(), Collectors.summingInt(vote -> 1)));
         Integer maxCount = votesCountPerRestaurant.values().stream()
                 .max(Comparator.comparingInt(count -> count)).orElse(null);

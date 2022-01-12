@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.javaops.restaurantvoting.model.Dish;
 
-import java.time.LocalDate;
 import java.util.List;
+
+import static ru.javaops.restaurantvoting.util.TimeUtil.TODAY;
 
 @RestController
 @RequestMapping(value = ProfileDishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,6 +34,6 @@ public class ProfileDishController extends AbstractDishController {
     @GetMapping("/{restaurantId}/dishes")
     @Cacheable(key = "'restaurant' + #restaurantId")
     public List<Dish> getAllForRestaurant(@PathVariable int restaurantId) {
-        return super.getAllForRestaurantByDate(restaurantId, LocalDate.now());
+        return super.getAllForRestaurantByDate(restaurantId, TODAY);
     }
 }
